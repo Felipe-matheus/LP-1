@@ -1,13 +1,53 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
 
-main(){
-	typedef struct{
+typedef struct{
 		char nome[100];
 		int ano;
 		float nota;
 	}movie;
 	movie movies[100];
+
+int load(char txt[]){
+
+   FILE *file;
+
+   char l[30];
+
+   int i, k = 0;
+
+   file = fopen(txt,"r");
+
+
+   if (file == NULL){
+
+        printf("Erro! Impossivel abrir o arquivo!\n");
+
+        exit(1);
+
+   }
+
+   
+
+   while(!feof(file)){
+
+       fgets(movies[i].nome, 30, file);
+       fgets(movies[i].ano, 30, file);
+       fgets(movies[i].nota, 30, file);
+       fgets(l, 30, file);
+       fscanf(file, "%d", k);
+       i++;
+
+   }
+
+   fclose(file);
+
+   return 0;
+
+}
+main(){
+	load("lista.txt");
 	FILE *file;
 	int menu,i=0,op,opc,k,n=0;
 	char name[100];
@@ -59,6 +99,16 @@ main(){
 				}
 				break;
 				system("cls");
+		
+				
 		}
-	}while(menu!=4);
+		file=fopen("lista.txt", "w");
+	for(i=0;i<n;i++){
+		fprintf(file,"\n%s", movies[i].nome);
+		fprintf(file,"\n%d", movies[i].ano);
+		fprintf(file,"\n%.1f", movies[i].nota);
+	}
+	fclose(file);
+	}while(menu!=5);
+	
 }
