@@ -8,15 +8,20 @@ typedef struct{
 		float nota;
 	}movie;
 	movie movies[100];
+	int n=0;
 
 int load(char txt[50]){
-
-   FILE *file;
+	FILE *archive;
+   	FILE *file;
+   
 
    char l[30];
 
    int i, k = 0;
-
+   int n;
+	archive = fopen("cont.txt", "w");
+	fscanf(archive,"%d", n);
+	fclose(archive);
    // Abrindo o arquivo.
 
    file = fopen(txt,"r");
@@ -32,7 +37,7 @@ int load(char txt[50]){
        fgets(l, 30, file);
        fscanf(file, "%d", k);
        i++;
-
+		
    }
 
    fclose(file);
@@ -43,7 +48,8 @@ int load(char txt[50]){
 main(){
 	//load("lista.txt");
 	FILE *file;
-	int menu,i=0,op,opc,k,n=0;
+	FILE *archive;
+	int menu,i=0,op,opc,k;
 	char name[100];
 	do{
 		printf("\nInsira a opcao desejada: \n1-cadastrar\n2-editar\n3-listar\n4-deletar\n5-sair\n");
@@ -89,7 +95,7 @@ main(){
 					printf("\nnome: ");
 					puts(movies[i].nome);
 					printf("ano: %d", movies[i].ano);
-					printf("\nnota: %.f", movies[i].nota);
+					printf("\nnota: %.2f", movies[i].nota);
 				}
 				break;
 				system("cls");
@@ -104,4 +110,7 @@ main(){
 		fprintf(file,"\n%.1f", movies[i].nota);
 	 }
 	fclose(file);
+	archive = fopen("cont.txt", "w");
+		fprintf(archive,"%d", n);
+	fclose(archive);
 }
