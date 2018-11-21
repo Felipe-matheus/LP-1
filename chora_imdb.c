@@ -9,7 +9,7 @@ typedef struct{
 	}movie;
 	movie movies[100];
 
-int load(char txt[]){
+int load(char txt[50]){
 
    FILE *file;
 
@@ -17,24 +17,18 @@ int load(char txt[]){
 
    int i, k = 0;
 
+   // Abrindo o arquivo.
+
    file = fopen(txt,"r");
 
 
-   if (file == NULL){
-
-        printf("Erro! Impossivel abrir o arquivo!\n");
-
-        exit(1);
-
-   }
-
-   
+   // Lendo os dados do arquivo e salvando no vetor.
 
    while(!feof(file)){
 
        fgets(movies[i].nome, 30, file);
-       fgets(movies[i].ano, 30, file);
-       fgets(movies[i].nota, 30, file);
+       fscanf(file,"%d",movies[i].ano, 30);
+       fscanf(file,"%f",movies[i].nota, 30);
        fgets(l, 30, file);
        fscanf(file, "%d", k);
        i++;
@@ -47,7 +41,7 @@ int load(char txt[]){
 
 }
 main(){
-	load("lista.txt");
+	//load("lista.txt");
 	FILE *file;
 	int menu,i=0,op,opc,k,n=0;
 	char name[100];
@@ -102,13 +96,12 @@ main(){
 		
 				
 		}
-		file=fopen("lista.txt", "w");
+	}while(menu!=5);
+	file=fopen("lista.txt", "w");
 	for(i=0;i<n;i++){
 		fprintf(file,"\n%s", movies[i].nome);
 		fprintf(file,"\n%d", movies[i].ano);
 		fprintf(file,"\n%.1f", movies[i].nota);
-	}
+	 }
 	fclose(file);
-	}while(menu!=5);
-	
 }
