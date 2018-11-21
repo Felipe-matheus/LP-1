@@ -13,15 +13,8 @@ typedef struct{
 int load(char txt[50]){
 	FILE *archive;
    	FILE *file;
-   
-
    char l[30];
-
    int i, k = 0;
-   int n;
-	archive = fopen("cont.txt", "w");
-	fscanf(archive,"%d", n);
-	fclose(archive);
    // Abrindo o arquivo.
 
    file = fopen(txt,"r");
@@ -37,7 +30,6 @@ int load(char txt[50]){
        fgets(l, 30, file);
        fscanf(file, "%d", k);
        i++;
-		
    }
 
    fclose(file);
@@ -46,15 +38,19 @@ int load(char txt[50]){
 
 }
 main(){
-	//load("lista.txt");
-	FILE *file;
+	load("lista.txt");
 	FILE *archive;
+	int n;
+	archive = fopen("cont.txt", "r");
+	fscanf(archive, "%d", n, 1);
+	fclose(archive);
+	FILE *file;
 	int menu,i=0,op,opc,k;
 	char name[100];
 	do{
 		printf("\nInsira a opcao desejada: \n1-cadastrar\n2-editar\n3-listar\n4-deletar\n5-sair\n");
+		fflush(stdin);
 		scanf("%d", &menu);
-		system("cls");
 		switch(menu){
 			case 1:
 				do{
@@ -99,11 +95,9 @@ main(){
 				}
 				break;
 				system("cls");
-		
-				
 		}
 	}while(menu!=5);
-	file=fopen("lista.txt", "w");
+	file = fopen("lista.txt", "w");
 	for(i=0;i<n;i++){
 		fprintf(file,"\n%s", movies[i].nome);
 		fprintf(file,"\n%d", movies[i].ano);
@@ -111,6 +105,7 @@ main(){
 	 }
 	fclose(file);
 	archive = fopen("cont.txt", "w");
-		fprintf(archive,"%d", n);
+	fprintf(archive, "%d", n);
 	fclose(archive);
+	system("pause");
 }
