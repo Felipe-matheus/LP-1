@@ -6,6 +6,7 @@
 
 typedef struct{
 	char nome[100];
+	int deletado;
 	int ano;
 	float nota;
 }movie;
@@ -13,9 +14,14 @@ movie movies[100];
 int n;
 FILE *file;
 
+
+
+
 cadastrar(){
 	int i=0, op;
 	do{
+		movies[i].deletado = 0;
+		
 		fflush(stdin);
 		printf("\nInsira o nome do filme: ");
 		gets(movies[i].nome);
@@ -62,28 +68,42 @@ editar(){
 listar(){
 	int i;
 	for(i=0;i<n;i++){
-
-		printf("\nnome: ");
-
-		puts(movies[i].nome);
-
-		printf("ano: %d", movies[i].ano);
-
-		printf("\nnota: %.2f", movies[i].nota);
-		
-
-
+		if(movies[i].deletado == 0){
+			printf("\n nome: ");
+			puts(movies[i].nome);
+			printf("ano: %d", movies[i].ano);
+			printf("\n nota: %.2f", movies[i].nota);	
+		}
 	}
 }
 
 
+deletar(){
+	int k;
+	fflush(stdin);
+	printf("\nDeseja deletar qual filme (insira o numero do indice dele na lista): ");
+	scanf("%d", &k);
+	movies[k].deletado = 1;
+}
 
 main(){
+	file = fopen("quantidade.txt", "r");
+	fscanf(file, "%d", &n);
+	printf("%d\n\n", n);
+	fclose(file);
+	int g;
+	file = fopen("filmes.txt", "r");
+	for(g = 0;g < n; g++){
+		fscanf(file,"%s", &movies[g].nome);
+		fscanf(file,"%d", &movies[g].ano);
+		fscanf(file,"%f", &movies[g].nota);
+	}
+	fclose(file);
 	int menu,j;
 	do{
-	printf("Insira a opção desejada: \n1-cadastrar\t2-editar\n3-listar\t4-sair\n");
+	printf("Insira a opção desejada: \n1-cadastrar\t2-editar\n3-listar\t4-deletar\n5-sair\n");
 	scanf("%d", &menu);
-	system("cls");
+	//system("cls");
 	switch(menu){
 		case 1:
 			cadastrar();
@@ -94,14 +114,22 @@ main(){
 		case 3:
 			listar();
 			break;
+		case 4:
+			deletar();
+			n--;
 		
 	}
-	}while(menu<4 && menu>0);
+	}while(menu<5 && menu>0);
 	file=fopen("filmes.txt","w");
 		for(j=0;j<n;j++){
-			fprintf(file,"%s\n",movies[j].nome);
-			fprintf(file,"%d\n", movies[j].ano);
-			fprintf(file, "%.1f\n", movies[j].nota);
+			if(movies[j].deletado == 0){
+				fprintf(file,"%s\n",movies[j].nome);
+				fprintf(file,"%d\n", movies[j].ano);
+				fprintf(file, "%.1f\n", movies[j].nota);	
+			}
 		}
+	fclose(file);
+	file = fopen("quantidade.txt", "w");
+	fprintf(file, "%d", n);
 	fclose(file);
 }
